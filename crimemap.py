@@ -10,12 +10,12 @@ DB = DBHelper()
 
 @app.route("/")
 def home():
-    try:
-        data = DB.get_all_inputs()
-    except Exception as e:
-        print e
-        data = None
-    return render_template("home.html", data=data)
+  try:
+    data = DB.get_all_inputs()
+  except Exception as e:
+    print e
+    data = None
+  return render_template("home.html", data=data)
 
 
 @app.route("/add", methods=["POST"])
