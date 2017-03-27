@@ -1,5 +1,6 @@
 import pymysql
 import dbconfig
+import datetime
 
 
 class DBHelper:
@@ -10,6 +11,7 @@ class DBHelper:
               passwd=dbconfig.db_password,
               db=database)
 
+# get_all_inputs ))))))))))))))))))))))))))))))))))))))))))))))))
   def get_all_inputs(self):
     connection = self.connect()
     try:
@@ -20,6 +22,7 @@ class DBHelper:
     finally:
       connection.close()
 
+# add_input  ))))))))))))))))))))))))))))))))))))))))))))))))))))
   def add_input(self, data):
     connection = self.connect()
     try:
@@ -30,6 +33,7 @@ class DBHelper:
     finally:
       connection.close()
 
+# clear_all ))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))
   def clear_all(self):
     connection = self.connect()
     try:
@@ -40,6 +44,7 @@ class DBHelper:
     finally:
       connection.close()
 
+# add_crime ))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))
   def add_crime(self, category, date, latitude, longitude, description):
     connection = self.connect()
     try:
@@ -52,3 +57,24 @@ class DBHelper:
       print(e)
     finally:
       connection.close()
+
+# get_all_crimes )))))))))))))))))))))))))))))))))))))))))))))))))))))))))
+  def get_all_crimes(self):
+    connection = self.connect()
+    try:
+     query = "SELECT latitude, longitude, date, category, description FROM crimes;"
+     with connection.cursor() as cursor:
+      cursor.execute(query)
+     named_crimes = []
+     for crime in cursor:
+      named_crime = {
+       'latitude': crime[0],
+       'longitude': crime[1],
+       'date': datetime.datetime.strftime(crime[2], '%Y- %m-%d'),
+       'category': crime[3],
+       'description': crime[4]
+      }
+      named_crimes.append(named_crime)
+     return named_crimes
+    finally:
+     connection.close()
